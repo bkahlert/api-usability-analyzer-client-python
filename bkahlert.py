@@ -21,33 +21,33 @@ class DiffCollector(object):
         self.src_dir = src_dir        
         
         self.dirs = dirs.Dirs(self.src_dir, [ ".git", ".svn", "bin", "build", "util", "misc", "docs", "docs2", "extras", "core" ], [ "*.o", "Thumbs.db", ".DS_Store", "CMakeCache.txt" ])
-        self.bin_dir = self.dirs.get_abs_dir_path("misc/seqan_instrumentation/bin")
+        self.bin_dir = self.dirs.get_abs_dir_path("apiua/bin")
         try:
-            os.mkdir(self.dirs.get_abs_dir_path("misc/seqan_instrumentation/last_revision_copy"))
+            os.mkdir(self.dirs.get_abs_dir_path("apiua/last_revision_copy"))
         except Exception:
             pass
-        self.last_revision_dir = self.dirs.get_abs_dir_path("misc/seqan_instrumentation/last_revision_copy")
+        self.last_revision_dir = self.dirs.get_abs_dir_path("apiua/last_revision_copy")
         try:
-            os.mkdir(self.dirs.get_abs_dir_path("misc/seqan_instrumentation/userdata"))
+            os.mkdir(self.dirs.get_abs_dir_path("apiua/userdata"))
         except Exception:
             pass
-        self.userdata_dir = self.dirs.get_abs_dir_path("misc/seqan_instrumentation/userdata")
+        self.userdata_dir = self.dirs.get_abs_dir_path("apiua/userdata")
 
         # if possible save user ID in the user's home directory
         # otherwise use sub folder of SeqAn installation
-        old_id_file = self.dirs.get_abs_file_path("misc/seqan_instrumentation/userdata/id.txt")
+        old_id_file = self.dirs.get_abs_file_path("apiua/userdata/id.txt")
         self.id_file = os.getenv("HOME", os.getenv("USERPROFILE"))
         if(self.id_file is None):
             self.id_file = old_id_file
         else:
-            self.id_file += "/.SUA.ID"
+            self.id_file += "/.APIUA.ID"
             # migrate old ID if no new one exists
             if(os.path.isfile(old_id_file) and not os.path.isfile(self.id_file)):
                 shutil.move(old_id_file, self.id_file)
                 
         self.id = id.ID(self.id_file)
 
-        self.stats_file = self.dirs.get_abs_file_path("misc/seqan_instrumentation/userdata/" + self.id.get() + "_stats.txt")
+        self.stats_file = self.dirs.get_abs_file_path("apiua/userdata/" + self.id.get() + "_stats.txt")
         self.stats = stats.Stats(cMake_binary_dir, src_dir, self.stats_file)
         self.stats.save("id", self.id.get())
         
@@ -72,7 +72,7 @@ class DiffCollector(object):
 
     def upload_diff(self, differ):
         print("upload..."),
-        differ.sync("http://dalak.imp.fu-berlin.de/SUAsrv/diff")
+        differ.sync("http://your.server/APIUAsrv/diff")
         print("upload finished;"),
 
     def update_comparision_copy(self, syncer):

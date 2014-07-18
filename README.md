@@ -14,20 +14,24 @@ The client also generates a unique ID for the observed subject and forwards it t
 3.2. Put a copy of the client on all computer you want to observe in the observed directory in a folder named "apiua" (you may place it wherever you want - in this case you need to change its location in bkahlert.py)
 4. Call the client every time you want it to check for changes and upload them to your data collection server.
 
-## Calling the client
+## Calling the Client
 
 The following line shows how to call the client:
 ```Shell
 python /absolute/path/src/apiua/apiua.py {event} {build_dir} {working_dir} 
 ```
 
-The client knows four events:
-1. **init** should be called if some build system initializes the source file. This makes the client collect the possibly changed data and also makes sure the subject has an ID and links it to the browser's fingerprint.  
+### Event Types
+
+#### init
+**init** should be called if some build system initializes the source file. This makes the client collect the possibly changed data and also makes sure the subject has an ID and links it to the browser's fingerprint.  
 Example  
 ```Shell
 python /absolute/path/src/apiua/apiua.py init /project/path/build /project/path/src
 ```
-1. **build** should be called if the user attempts to build a target. This makes the client collect the possibly changed data.
+
+#### build
+**build** should be called if the user attempts to build a target. This makes the client collect the possibly changed data.
 Example  
 ```Shell
 python /absolute/path/src/apiua/apiua.py build /project/path/build /project/path/src
@@ -38,9 +42,9 @@ The collected data are sent to the server configured as explained in the getting
 ## Testing
 
 1. Install client
-2. Call client with init  
-Your default browser should open the registration page  
-In your source directory you should find the file .APIUA containing your ID
+2. Call client with init
+2.1. Your default browser should open the registration page
+2.2 In your source directory you should find the file .APIUA containing your ID
 3. Check if the data collections server's collected data contain data (diff and doclog) for the ID found in .APIUA
 
 License
